@@ -1,5 +1,5 @@
 #' @import caret
-#' @importFrom MLmetrics Accuracy AUC F1_Score
+#' @importFrom MLmetrics Accuracy AUC F1_Score LogLoss
 #' @importFrom mltools mcc
 build.model <- function(data.train,
                         data.test,
@@ -16,8 +16,9 @@ build.model <- function(data.train,
   auc <- AUC(ypred, ytest)
   mcc <- mcc(ypred, ytest)
   f1 <- F1_Score(ypred, ytest)
-  result <- c(accuracy, auc, mcc, f1)
-  names(result) <- c('Accuracy', 'AUC', 'MCC', 'F1')
+  log <- LogLoss(ypred, ytest)
+  result <- c(accuracy, auc, mcc, f1, log)
+  names(result) <- c('Accuracy', 'AUC', 'MCC', 'F1', 'LogLoss')
   return(result)
 }
 
@@ -155,7 +156,7 @@ model.result.top.var <- function(x,
                          list.index.cross){
   N <- c(5, 10, 15, 20, 30, 40, 50, 75, 100)
   result.data <- data.frame(N)
-  result.data[,c('mean.acc', 'mean.auc', 'mean.mcc', 'mean.f1', 'sd.acc', 'sd.auc', 'sd.mcc', 'sd.f1')] <- NA
+  result.data[,c('mean.acc', 'mean.auc', 'mean.mcc', 'mean.f1', 'mean.log', 'sd.acc', 'sd.auc', 'sd.mcc', 'sd.f1', 'sf.log')] <- NA
   for(n in N){
     metrics <- build.model.crossval(x,
                                     y,
@@ -168,20 +169,24 @@ model.result.top.var <- function(x,
     auc <- c()
     mcc <- c()
     f1 <- c()
+    log <- c()
     for(i in 1:length(metrics)){
       acc <- append(acc, metrics[[i]][1])
       auc <- append(auc, metrics[[i]][2])
       mcc <- append(mcc, metrics[[i]][3])
       f1 <- append(f1, metrics[[i]][4])
+      log <- append(log, metrics[[i]][5])
     }
     result.data[result.data$N == n,'mean.acc'] <- sum(acc) / length(metrics)
     result.data[result.data$N == n,'mean.auc'] <- sum(auc) / length(metrics)
     result.data[result.data$N == n,'mean.mcc'] <- sum(mcc) / length(metrics)
     result.data[result.data$N == n,'mean.f1'] <- sum(f1) / length(metrics)
+    result.data[result.data$N == n,'mean.log'] <- sum(log) / length(metrics)
     result.data[result.data$N == n,'sd.acc'] <- sd(acc)
     result.data[result.data$N == n,'sd.auc'] <- sd(auc)
     result.data[result.data$N == n,'sd.mcc'] <- sd(mcc)
     result.data[result.data$N == n,'sd.f1'] <- sd(f1)
+    result.data[result.data$N == n,'sd.log'] <- sd(log)
   }
   return(result.data)
 }
