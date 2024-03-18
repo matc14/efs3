@@ -24,6 +24,7 @@
 #' @importFrom stats p.adjust
 #' @export
 fs.fcbf <- function(x, y, params = list(su = 0.25)){
+  print(x)
   if (!is.data.frame(x)) data = as.data.frame(x)
   xf <- discretize_exprs(x)
   result <- fcbf(xf,
