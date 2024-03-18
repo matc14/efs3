@@ -38,7 +38,8 @@ print(result)
 test <- as.data.frame(result)
 vars <- test$index
 numvars <- as.numeric(vars)
-var.imp <- data.frame(name = t(x[1, numvars]), score = test$SU)
+cols <- colnames(x)
+var.imp <- data.frame(name = cols[numvars], score = test$SU)
 colnames(var.imp)[1] <- "name"
 rownames <- rownames(var.imp)
 rownames(var.imp) <- as.numeric(test$index)
