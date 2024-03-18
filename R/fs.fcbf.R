@@ -40,11 +40,8 @@ print(vars)
 numvars <- as.numeric(vars)
 print(numvars)
 var.imp <- data.frame(name = t(x[1, numvars]), score = test$SU)
-print("log1")
 colnames(var.imp)[1] <- "name"
 rownames <- rownames(var.imp)
-print("log1")
 rownames(var.imp) <- as.numeric(test$index)
-print("log1")
 return(var.imp)
 }
