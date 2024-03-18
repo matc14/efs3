@@ -34,15 +34,14 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
                 verbose = FALSE,
                 samples_in_rows = TRUE,
                 balance_classes = FALSE)
-print(result)
-test <- as.data.frame(result)
-vars <- test$index
+df <- as.data.frame(result)
+vars <- df$index
 numvars <- as.numeric(vars)
 cols <- colnames(x)
-var.imp <- data.frame(name = cols[numvars], score = test$SU)
+var.imp <- data.frame(name = cols[numvars], score = df$SU)
 colnames(var.imp)[1] <- "name"
 rownames <- rownames(var.imp)
-rownames(var.imp) <- as.numeric(test$index)
+rownames(var.imp) <- as.numeric(df$index)
 print(var.imp)
 return(var.imp)
 }
