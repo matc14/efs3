@@ -31,6 +31,7 @@ fs.mdfs.1D <- function(x, y, params = list(adjust = 'holm', alpha = 0.05)){
   alpha = params$alpha 
   result = MDFS(data = x, decision = y, dimensions = dim0, divisions = div0, use.CUDA = FALSE,
                 p.adjust.method = adjust)
+  print(result)
   var.names = names(x)
   index.imp = RelevantVariables(result$MDFS,
                                 level = alpha,
