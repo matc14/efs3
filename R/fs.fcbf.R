@@ -39,7 +39,6 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
   col_name <- paste("V", a, sep="")
   x[row_num, col_name]
 })
-  var.imp <- data.frame(name = name_content, score = df_output$SU)
-  print(var.imp)
+  var.imp <- data.frame(name = name_content, score = result$SU)
   return(var.imp)
 }
