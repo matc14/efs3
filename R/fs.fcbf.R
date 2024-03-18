@@ -24,7 +24,7 @@
 #' @importFrom stats p.adjust
 #' @export
 fs.fcbf <- function(x, y, params = list(su = 0.25)){
-  if (!is.data.frame(x)) data <- as.data.frame(x)
+  if (!is.data.frame(x)) data = as.data.frame(x)
   xf <- discretize_exprs(x[,1:params$feature.number])
   result <- fcbf(xf,
                 y,
@@ -33,11 +33,17 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
                 verbose = FALSE,
                 samples_in_rows = TRUE,
                 balance_classes = FALSE)
-  print(result)
-  test <- as.data.frame(result)
-  vars <- test$index
-  numvars <- as.numeric(vars)
-  varimp <- data.frame(name = t(x[1, numvars]), score = test$SU)
-  rownames(varimp) <- test$index
-  return(varimp)
+print(result)
+test <- as.data.frame(result)
+vars <- test$index
+print(vars)
+numvars <- as.numeric(vars)
+print(numvars)
+varimp <- data.frame(name = t(x[1, numvars]), score = test$SU)
+print("log1")
+rownames <- rownames(varimp)
+print("log1")
+rownames(varimp) <- as.numeric(test$index)
+print("log1")
+return(varimp)
 }
