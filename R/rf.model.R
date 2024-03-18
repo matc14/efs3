@@ -1,5 +1,5 @@
 #' @import caret
-#' @importFrom MLmetrics Accuracy AUC MSE
+#' @importFrom MLmetrics Accuracy AUC F1_Score
 #' @importFrom mltools mcc
 build.model <- function(data.train,
                         data.test,
@@ -15,9 +15,9 @@ build.model <- function(data.train,
   accuracy <- Accuracy(ypred, ytest)
   auc <- AUC(ypred, ytest)
   mcc <- mcc(ypred, ytest)
-  mse <- MSE(as.numeric(as.character(ypred)), as.numeric(as.character(ytest)))
-  result <- c(accuracy, auc, mcc, mse)
-  names(result) <- c('Accuracy', 'AUC', 'MCC', 'MSE')
+  f1 <- F1_Score(ypred, ytest)
+  result <- c(accuracy, auc, mcc, f1)
+  names(result) <- c('Accuracy', 'AUC', 'MCC', 'F1')
   return(result)
 }
 
@@ -32,7 +32,7 @@ build.model <- function(data.train,
 #' @param list.selected.var A \code{\link{list}} with selected variables in cross-validation
 #' @param list.index.cross A \code{\link{list}} with indexes obtained in cross-validation
 #' @param nvar the number of first variables for which to train model Random Forest
-#' @return A \code{\link{list}} with metrics Accuracy, AUC, MCC, MSE
+#' @return A \code{\link{list}} with metrics Accuracy, AUC, MCC, F1
 #'
 #' @examples
 #' \dontrun{
@@ -98,8 +98,6 @@ build.model.crossval <- function(x,
                              ytrain = ytrain,
                              ytest = ytest)
     }
-
-
   }
   N = niter*ncross
   result.metrics <-  lapply(1:N, function(m) train.rf(m, x = x,
@@ -123,7 +121,7 @@ build.model.crossval <- function(x,
 #' @param y decision variable as a boolean vector of length equal to number of observations
 #' @param list.selected.var A \code{\link{list}} with selected variables in cross-validation
 #' @param list.index.cross A \code{\link{list}} with indexes obtained in cross-validation
-#' @return A \code{\link{data.frame}} with metrics Accuracy, AUC, MCC, MSE for the top-N variables N = 5,10,15,20,30,40,50,75,100
+#' @return A \code{\link{data.frame}} with metrics Accuracy, AUC, MCC for the top-N variables N = 5,10,15,20,30,40,50,75,100
 #'
 #' @examples
 #' \dontrun{
@@ -157,7 +155,7 @@ model.result.top.var <- function(x,
                          list.index.cross){
   N <- c(5, 10, 15, 20, 30, 40, 50, 75, 100)
   result.data <- data.frame(N)
-  result.data[,c('mean.acc', 'mean.auc', 'mean.mcc', 'mean.mse', 'sd.acc', 'sd.auc', 'sd.mcc', 'sd.mse')] <- NA
+  result.data[,c('mean.acc', 'mean.auc', 'mean.mcc', 'mean.f1', 'sd.acc', 'sd.auc', 'sd.mcc', 'sd.f1')] <- NA
   for(n in N){
     metrics <- build.model.crossval(x,
                                     y,
@@ -169,21 +167,21 @@ model.result.top.var <- function(x,
     acc <- c()
     auc <- c()
     mcc <- c()
-    mse <- c()
+    f1 <- c()
     for(i in 1:length(metrics)){
       acc <- append(acc, metrics[[i]][1])
       auc <- append(auc, metrics[[i]][2])
       mcc <- append(mcc, metrics[[i]][3])
-      mse <- append(mse, metrics[[i]][4])
+      f1 <- append(f1, metrics[[i]][4])
     }
     result.data[result.data$N == n,'mean.acc'] <- sum(acc) / length(metrics)
     result.data[result.data$N == n,'mean.auc'] <- sum(auc) / length(metrics)
     result.data[result.data$N == n,'mean.mcc'] <- sum(mcc) / length(metrics)
-    result.data[result.data$N == n,'mean.mse'] <- sum(mse) / length(metrics)
+    result.data[result.data$N == n,'mean.f1'] <- sum(f1) / length(metrics)
     result.data[result.data$N == n,'sd.acc'] <- sd(acc)
     result.data[result.data$N == n,'sd.auc'] <- sd(auc)
     result.data[result.data$N == n,'sd.mcc'] <- sd(mcc)
-    result.data[result.data$N == n,'sd.mse'] <- sd(mse)
+    result.data[result.data$N == n,'sd.f1'] <- sd(f1)
   }
   return(result.data)
 }

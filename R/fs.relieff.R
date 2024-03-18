@@ -1,8 +1,7 @@
-#' Test U Manna-Whitneya (U-test) for feature selection
+#' Build ReliefF Feature Selector
 #'
 #' @details
-#' In case of FDR control it is recommended to use Benjamini-Hochberg-Yekutieli
-#' p-value adjustment
+#' Build ReliefF Feature Selector
 #'
 #' @param x input data where columns are variables and rows are observations (all numeric)
 #' @param y decision variable as a boolean vector of length equal to number of observations
@@ -10,19 +9,36 @@
 #' is recommended for FDR, see Details)
 #' @return A \code{\link{data.frame}} with selected features and p.value
 #'
-#' @examples
 #'
+#' @examples
 #' \dontrun{
 #'
 #' decisions <- data$class
 #' data$class <- NULL
 #'
-#' fs.utest(data, decisions, params = list(adjust = 'holm', alpha = 0.05))
+#' fs.mdfs.1D(data, decisions, params = list(feature.number = 100))
 #' }
 #'
-#' @importFrom stats wilcox.test p.adjust
-#' 
+#' @importFrom mt fs.relief
 #' @export
+# fs.mdfs.1D <- function(x, y, params = list(adjust = 'holm', alpha = 0.05)){
+#   if (!is.data.frame(x)) data = as.data.frame(x)
+#   dim0 = 1
+#   div0 = 3
+#   adjust = params$adjust
+#   alpha = params$alpha 
+#   result = MDFS(data = x, decision = y, dimensions = dim0, divisions = div0, use.CUDA = FALSE,
+#                 p.adjust.method = adjust)
+#   var.names = names(x)
+#   index.imp = RelevantVariables(result$MDFS,
+#                                 level = alpha,
+#                                 p.adjust.method = adjust)
+#   var.imp.frame = data.frame(name = var.names,
+#                              Pvalue = result$p.value,
+#                              adjustPvalue = result$adjusted.p.value)[index.imp,]
+#   var.imp = var.imp.frame[order(var.imp.frame$adjustPvalue, decreasing = F),]
+#   return(var.imp)
+# }
 fs.relieff <- function(x, y, params = list(feature.number = 100)){
   result <- fs.relief(x, y)
   stats <- as.data.frame(result$stats)
@@ -33,3 +49,4 @@ fs.relieff <- function(x, y, params = list(feature.number = 100)){
   var.imp <- var.imp[order(var.imp$score, decreasing=T),][1:params$feature.number,]
   return(var.imp)
 }
+
