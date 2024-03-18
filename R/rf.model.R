@@ -16,7 +16,7 @@ build.model <- function(data.train,
   auc <- AUC(ypred, ytest)
   mcc <- mcc(ypred, ytest)
   f1 <- F1_Score(ypred, ytest)
-  log <- LogLoss(ypred, ytest)
+  log <- LogLoss(as.numeric(as.character(ypred)), a.numeric(as.character(ytest)))
   result <- c(accuracy, auc, mcc, f1, log)
   names(result) <- c('Accuracy', 'AUC', 'MCC', 'F1', 'LogLoss')
   return(result)
