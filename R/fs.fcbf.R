@@ -42,6 +42,5 @@ var.imp <- data.frame(name = cols[numvars], score = df$SU)
 colnames(var.imp)[1] <- "name"
 rownames <- rownames(var.imp)
 rownames(var.imp) <- as.numeric(df$index)
-print(var.imp)
 return(var.imp)
 }
