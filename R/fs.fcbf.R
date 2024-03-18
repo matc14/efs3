@@ -33,12 +33,15 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
                 verbose = FALSE,
                 samples_in_rows = TRUE,
                 balance_classes = FALSE)
+  print(result)
   names <- paste("V", result$index, sep="")
+  print(names)
   name_content <- sapply(result$index, function(a) {
   row_num <- as.numeric(a)
   col_name <- paste("V", a, sep="")
   x[row_num, col_name]
 })
+  print(name_content)
   var.imp <- data.frame(name = name_content, score = result$SU)
   print(var.imp)
   return(var.imp)
