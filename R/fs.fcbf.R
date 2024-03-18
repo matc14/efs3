@@ -33,10 +33,16 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
                 verbose = FALSE,
                 samples_in_rows = TRUE,
                 balance_classes = FALSE)
+print(result)
 vars <- result$index
+print("log1")
 numvars <- as.numeric(vars)
+print("log1")
 var.imp <- data.frame(name = t(df[1, numvars]), score = result$SU)
+print("log1")
 rownames <- rownames(var.imp)
+print("log1")
 rownames(var.imp) <- as.numeric(result$index)
+print("log1")
 return(var.imp)
 }
