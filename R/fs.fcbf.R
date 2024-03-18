@@ -34,15 +34,16 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
                 samples_in_rows = TRUE,
                 balance_classes = FALSE)
 print(result)
-vars <- result$index
+test <- as.data.frame(result)
+vars <- test$index
 print(vars)
 numvars <- as.numeric(vars)
 print(numvars)
-varimp <- data.frame(name = t(df[1, numvars]), score = result$SU)
+varimp <- data.frame(name = t(df[1, numvars]), score = test$SU)
 print("log1")
 rownames <- rownames(varimp)
 print("log1")
-rownames(varimp) <- as.numeric(result$index)
+rownames(varimp) <- as.numeric(test$index)
 print("log1")
 return(varimp)
 }
