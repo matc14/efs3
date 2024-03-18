@@ -37,7 +37,7 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
   test <- as.data.frame(result)
   vars <- test$index
   numvars <- as.numeric(vars)
-  varimp <- data.frame(name = t(df[1, numvars]), score = test$SU)
+  varimp <- data.frame(name = t(x[1, numvars]), score = test$SU)
   rownames(varimp) <- test$index
   return(varimp)
 }
