@@ -43,6 +43,7 @@ fs.mcfs <- function(x, y, params = list(cutoff.method = c("kmeans"))){
                  finalCVSetSize = 1000,
                  seed = NA,
                  threadsNumber = 5)
+  print(result)
   result.data <- result$RI
   var.name <- names(result$data)[-length(names(result$data))]
   var.imp <- result.data[result.data$attribute %in% c(var.name),c('attribute', 'RI')]
