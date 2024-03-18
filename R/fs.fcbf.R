@@ -34,7 +34,7 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
                 samples_in_rows = TRUE,
                 balance_classes = FALSE)
   names <- paste("V", result$index, sep="")
-  name_contents <- sapply(result$index, function(a) {
+  name_content <- sapply(result$index, function(a) {
   row_num <- as.numeric(a)
   col_name <- paste("V", a, sep="")
   x[row_num, col_name]
