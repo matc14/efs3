@@ -38,7 +38,6 @@ fs.mrmr <- function(x, y, params = list(feature.number = 100)){
                            target_indices = 1,
                            solution_count = 1,
                            feature_count = params$feature.number)
-  print(results)
   var.imp.new.names = apply(solutions(results)[[1]], 2,
                             function(x, y) { return(y[x]) },
                             y = featureNames(feature.data))
