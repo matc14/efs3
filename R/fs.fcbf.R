@@ -36,12 +36,11 @@ fs.fcbf <- function(x, y, params = list(su = 0.25)){
 print(result)
 test <- as.data.frame(result)
 vars <- test$index
-print(vars)
-numvars <- as.numeric(vars)
-print(numvars)
+numvars <- as.numeric(vars)s)
 var.imp <- data.frame(name = t(x[1, numvars]), score = test$SU)
 colnames(var.imp)[1] <- "name"
 rownames <- rownames(var.imp)
 rownames(var.imp) <- as.numeric(test$index)
+print(var.imp)
 return(var.imp)
 }
